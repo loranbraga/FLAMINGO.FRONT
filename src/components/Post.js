@@ -1,5 +1,5 @@
 import React from 'react';
-import { Media, Row, Col } from 'reactstrap';
+import { Media, Row } from 'reactstrap';
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
 
 import profile from '../images/profile.svg'

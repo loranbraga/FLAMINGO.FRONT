@@ -38,7 +38,7 @@ function Login() {
             </Row>
             <Row className="mt-3">
               <Col >
-                <a href="#top" style={{color: "#ff409f"}} className="font-weight-bold">Não tem conta? Crie aqui!</a>
+                <a href="/register" style={{color: "#ff409f"}} className="font-weight-bold">Não tem conta? Crie aqui!</a>
               </Col>
             </Row>
 
