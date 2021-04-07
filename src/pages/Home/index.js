@@ -1,13 +1,17 @@
 import React from 'react'
 import { Container, Input, Button, Row, Col } from 'reactstrap'
+import { useSelector } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
 import Menu from '../../components/Menu'
 import Post from '../../components/Post'
 import profile from '../../images/profile.svg'
 
-function index() {
+function Home() {
+
   return (
     <>
+     { !useSelector(state => state.authenticated) && <Redirect to="/" />}
       <Menu />
       <Container style={
         {
@@ -52,4 +56,4 @@ function index() {
   )
 }
 
-export default index
+export default Home

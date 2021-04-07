@@ -15,16 +15,14 @@ import store from './store'
 
 function App() {
   return (
-    <>
+    <Provider store={store}>
       <ReactNotification />
-      <Provider store={store}>
-        <Router>
-          <Route exact path='/'  component={Login}/>
-          <Route exact path='/home'  component={Home}/>
-          <Route exact path='/register'  component={Register}/>
-        </Router>
-      </Provider>
-    </>
+      <Router>
+        <Route exact path='/'  component={Login}/>
+        <Route exact path='/home'  component={Home}/>
+        <Route exact path='/register'  component={Register}/>
+      </Router>
+    </Provider>
   );
 }
 
