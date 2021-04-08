@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://127.0.0.1:3333/',
-  // baseURL: '',
+  // baseURL: 'http://127.0.0.1:3333/',
+  baseURL: process.env.REACT_APP_API || 'https://flamingo-br-api.herokuapp.com/',
 });
 
 api.interceptors.request.use(
