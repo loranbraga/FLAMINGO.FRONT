@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useMediaQuery } from 'react-responsive'
 import { useHistory } from 'react-router-dom'
 import { Card, CardBody, Row, Input, Label, Button } from 'reactstrap'
 import Notification from '../../helper/Notification'
@@ -9,6 +10,8 @@ import { registerUser } from '../../services/userService'
 function Register() {
 
   const history = useHistory()
+
+  const isMobile = useMediaQuery({ query: '(max-width: 1000px)' })
 
   const [email,setEmail] = useState('')
   const [username,setUsername] = useState('')
@@ -63,7 +66,7 @@ function Register() {
   return (
     <div style={{ width: '100%', height: '100vh', backgroundColor: '#40b4ff'}}
      className="d-flex justify-content-center">
-      <Card style={{ height: '600px', width: '50%'}} className="align-self-center">
+      <Card style={isMobile? { minHeight: '600px', width: '90%'} : { height: '600px', width: '50%'}} className="align-self-center">
         <CardBody>
           <Row>
             <h1 className="mx-auto font-weight-bold" style={{ color: '#ff409f' }}>FLAMINGO</h1>

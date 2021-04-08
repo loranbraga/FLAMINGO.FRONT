@@ -2,6 +2,7 @@ import React, { useState} from 'react'
 import { Row, Col, Input, Button } from 'reactstrap'
 import { Redirect } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { useMediaQuery } from 'react-responsive';
 
 import { authenticate } from '../../services/userService'
 import flamingo from '../../images/flamingo.jpg'
@@ -11,6 +12,8 @@ function Login() {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  const isMobile = useMediaQuery({ query: '(max-width: 1000px)' });
 
 
   const dispatch = useDispatch()
@@ -29,10 +32,14 @@ function Login() {
     <>
      { useSelector(state => state.authenticated) && <Redirect to="/home" />}
       <Row className="m-0">
-        <Col lg={5} md={0} className="p-0">
-          <img src={flamingo} alt="Home" style={{display: 'block', width: "150%", height: "981px"}}/>
-        </Col>
-        <Col lg={7} md={12} style={{ backgroundColor: "#40b4ff"  }} className=" d-flex align-items-center">
+        {
+          !isMobile && 
+          <Col lg={5} md={0} className="p-0">
+            <img src={flamingo} alt="Home" style={{display: 'block', width: "150%", height: "100vh"}}/>
+          </Col>
+        }
+        
+        <Col lg={7} md={12} style={isMobile? { backgroundColor: "#40b4ff" , height: "100vh" }:  { backgroundColor: "#40b4ff" }} className=" d-flex align-items-center">
           <div className="mx-auto">
             <Row>
               <h1 className="text-white mx-auto font-weight-bold">FLAMINGO</h1>
@@ -41,10 +48,10 @@ function Login() {
               <h2 className="text-white mx-auto ">Somos a cópia do Twitter</h2>
             </Row>
             <Row className="mt-5">
-              <Col>
+              <Col lg={6} md={12} className="mb-2">
                 <Input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
               </Col>
-              <Col>
+              <Col lg={6} md={12}>
                 <Input placeholder="Senha" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
               </Col>
             </Row>
