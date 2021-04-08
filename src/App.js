@@ -8,6 +8,7 @@ import 'react-notifications-component/dist/theme.css'
 import Login from './pages/Login'
 import Home from './pages/Home'
 import Register from './pages/Register'
+import Profile from './pages/Profile'
 
 import store from './store'
 
@@ -20,6 +21,7 @@ function App() {
       <Router>
         <Route exact path='/'  component={Login}/>
         <Route exact path='/home'  component={Home}/>
+        <Route exact path='/posts/:username'  component={Profile}/>
         <Route exact path='/register'  component={Register}/>
       </Router>
     </Provider>

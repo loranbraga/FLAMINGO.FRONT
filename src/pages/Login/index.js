@@ -18,7 +18,7 @@ function Login() {
   const onSubmit = async () => {
     try {
       const { data } = await authenticate(email, password)
-      dispatch({type: 'LOGIN', user: data.user , token: data.token})
+      dispatch({type: 'LOGIN', user: data.user, username: data.user.username, token: data.token})
       Notification.success("Entrooou!", "Você esta dentro do flamingo!")
     } catch (error) {
       Notification.error("Erro!", error.message)

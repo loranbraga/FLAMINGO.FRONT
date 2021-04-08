@@ -1,16 +1,19 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import { Container, Input, Button, Row, Col } from 'reactstrap'
 import { useSelector } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { Redirect, useParams } from 'react-router-dom'
 
-import { createPost, getPosts } from '../../services/postService'
+import { createPost, getPostsByUser } from '../../services/postService'
 
 import Menu from '../../components/Menu'
 import Post from '../../components/Post'
 import profile from '../../images/profile.svg'
 import Notification from '../../helper/Notification'
 
-function Home() {
+function Profile() {
+
+  const { username } = useParams()
 
   const [content, setContent] = useState('')
   const [posts, setPosts] = useState([])
@@ -29,13 +32,18 @@ function Home() {
   }
 
   const get = async () => {
-    const { data } = await getPosts();
-    setPosts(data)
+    try {
+      const { data } = await getPostsByUser(username);
+      setPosts(data)    
+    } catch (error) {
+      Notification.error("Error!", "Usuário não encotrado")
+      setPosts([])
+    }
   }
 
   useEffect(() => {
     get()
-  }, [update])
+  }, [update, username])
 
   return (
     <>
@@ -79,4 +87,4 @@ function Home() {
   )
 }
 
-export default Home
+export default Profile
