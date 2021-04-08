@@ -1,9 +1,11 @@
 import React from 'react';
-import { Media, Row } from 'reactstrap';
-import { AiFillLike, AiFillDislike } from "react-icons/ai";
+import { Media, Row } from 'reactstrap'
+import { Link } from 'react-router-dom'
+import { AiFillLike, AiFillDislike } from "react-icons/ai"
 
 import profile from '../images/profile.svg'
-import { likePost, dislikePost } from '../services/postService'
+import { likePost, dislikePost, deletePost } from '../services/postService'
+import Notification from '../helper/Notification'
 
 const Post = ({ post, setUpdate, update }) => {
 
@@ -12,7 +14,7 @@ const Post = ({ post, setUpdate, update }) => {
       await likePost(post.id)
       setUpdate(!update)
     } catch (error) {
-      console.log(error.message)
+      Notification.error("Error!", error.message)
     }
   }
 
@@ -21,12 +23,31 @@ const Post = ({ post, setUpdate, update }) => {
       await dislikePost(post.id)
       setUpdate(!update)
     } catch (error) {
-      console.log(error.message)
+      Notification.error("Error!", error.message)
+    }
+  }
+
+  const deleteClick = async () => {
+    try {
+      await deletePost(post.id)
+      setUpdate(!update)
+    } catch (error) {
+      Notification.error("Error!", error.message)
     }
   }
 
   return (
-      <div style={{borderBottom: '1px solid #dcdcdc'}} className="p-4">
+      <div style={{borderBottom: '1px solid #dcdcdc'}} className="p-3">
+        {
+          (localStorage.getItem('role') === 'admin' || localStorage.getItem('username') === post.user.username)? 
+            <button className="float-right font-size-10" onClick={() => deleteClick()} style={{border: "none", backgroundColor: "#f8f9fa", color: "#40b4ff"}}>
+              Remover
+            </button>
+          :
+            <button className="float-right" style={{border: "none", backgroundColor: "#f8f9fa", cursor: "default"}}></button>
+
+        }
+        
         <Row>
           <Media>
               <Media left href="#">
@@ -34,11 +55,12 @@ const Post = ({ post, setUpdate, update }) => {
               </Media>
               <Media body className="ml-3">
                 <Media heading style={{ fontSize: '18px'}}>
-                  {post.user.name} <span style={{color: "#40b4ff"}}>@{post.user.username}</span>
+                  {post.user.name} <Link to={`/posts/${post.user.username}`} style={{color: "#40b4ff", textDecoration: 'none'}}>@{post.user.username}</Link>
                 </Media>
                 {post.content}
               </Media>
           </Media>
+              
         </Row>
         <Row className="mt-3 d-flex justify-content-center">
           <div className="mr-5 d-flex align-items-center" >

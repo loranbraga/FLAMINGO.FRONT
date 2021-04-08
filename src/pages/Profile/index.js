@@ -10,6 +10,7 @@ import Menu from '../../components/Menu'
 import Post from '../../components/Post'
 import profile from '../../images/profile.svg'
 import Notification from '../../helper/Notification'
+import Loader from '../../helper/Loader'
 
 function Profile() {
 
@@ -18,16 +19,20 @@ function Profile() {
   const [content, setContent] = useState('')
   const [posts, setPosts] = useState([])
   const [update, setUpdate] = useState(false)
+  const [loading, setLoading] = useState(false)
+
 
   const publish = async () => {
     try {
+      setLoading(true)
       const { data } = await createPost({content});
       setPosts([data, ...posts])
       setContent('')
       Notification.success("Sucesso!", "Post publicado")
     } catch (error) {
       Notification.error("Error!", error.message)
-      
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -47,7 +52,8 @@ function Profile() {
 
   return (
     <>
-     { !useSelector(state => state.authenticated) && <Redirect to="/" />}
+      { loading && <Loader />}
+      { !useSelector(state => state.authenticated) && <Redirect to="/" />}
       <Menu />
       <Container style={
         {
@@ -57,25 +63,28 @@ function Profile() {
           minHeight: '900px',
         }
       } className="mt-3 p-0" >
-        <div className="mt-2 p-3" style={
         {
-          borderBottom: '1px solid #dcdcdc',
-        }}>
-          <Row className="p-0 m-0">
-            <Col  md={1} className="p-0 m-0">
-              <img src={profile} alt="" className="rounded-circle" />
-            </Col>
-            <Col md={11} className="p-0 m-0">
-              <Input placeholder="O que você está pensando?"  value={content} type="textarea" name="text" id="exampleText" onChange={ (e) => setContent(e.target.value)}/>
-            </Col>
-          </Row>
-          <Row className="my-2">
-            <Col md={9}></Col>
-            <Col md={3}>
-              <Button type="button"  style={{backgroundColor: "#40b4ff", borderColor: "#40b4ff"}} block onClick={ () => publish()}>Publicar</Button> 
-            </Col>
-          </Row>
-        </div>
+          localStorage.getItem('username') === username &&
+          <div className="mt-2 p-3" style={
+            {
+              borderBottom: '1px solid #dcdcdc',
+            }}>
+              <Row className="p-0 m-0">
+                <Col  md={1} className="p-0 m-0">
+                  <img src={profile} alt="" className="rounded-circle" />
+                </Col>
+                <Col md={11} className="p-0 m-0">
+                  <Input placeholder="O que você está pensando?"  value={content} type="textarea" name="text" id="exampleText" onChange={ (e) => setContent(e.target.value)}/>
+                </Col>
+              </Row>
+              <Row className="my-2">
+                <Col md={9}></Col>
+                <Col md={3}>
+                  <Button type="button"  style={{backgroundColor: "#40b4ff", borderColor: "#40b4ff"}} block onClick={ () => publish()}>Publicar</Button> 
+                </Col>
+              </Row>
+            </div>
+        }
         { 
           posts && posts.map((post) => {
             return <Post key={post.id} post={post} setUpdate={setUpdate} update={update}/>
