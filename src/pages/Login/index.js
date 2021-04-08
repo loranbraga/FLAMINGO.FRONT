@@ -7,6 +7,7 @@ import { useMediaQuery } from 'react-responsive';
 import { authenticate } from '../../services/userService'
 import flamingo from '../../images/flamingo.jpg'
 import Notification from '../../helper/Notification'
+import Loader from '../../helper/Loader'
 
 function Login() {
 
@@ -21,7 +22,7 @@ function Login() {
   const onSubmit = async () => {
     try {
       const { data } = await authenticate(email, password)
-      dispatch({type: 'LOGIN', user: data.user, username: data.user.username, token: data.token})
+      dispatch({type: 'LOGIN', user: data.user, username: data.user.username, token: data.token, role: data.user.role})
       Notification.success("Entrooou!", "Você esta dentro do flamingo!")
     } catch (error) {
       Notification.error("Erro!", error.message)
@@ -30,7 +31,8 @@ function Login() {
 
   return (
     <>
-     { useSelector(state => state.authenticated) && <Redirect to="/home" />}
+      {/* <Loader /> */}
+      { useSelector(state => state.authenticated) && <Redirect to="/home" />}
       <Row className="m-0">
         {
           !isMobile && 

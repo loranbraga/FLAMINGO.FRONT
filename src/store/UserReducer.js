@@ -2,6 +2,7 @@ const INITIAL_STATE = {
   user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
   authenticated: localStorage.getItem('token') ? true : false,
   username: localStorage.getItem('username') ?  localStorage.getItem('username') : null,
+  role: localStorage.getItem('role') ?  localStorage.getItem('role') : null,
 }
 
 function UserReducer(state = INITIAL_STATE, action){
@@ -12,12 +13,14 @@ function UserReducer(state = INITIAL_STATE, action){
       localStorage.setItem('token', action.token)
       localStorage.setItem('user', JSON.stringify(action.user))
       localStorage.setItem('username', action.user.username)
-      return { ...state, authenticated: true, user: action.user, username: action.username }
+      localStorage.setItem('role', action.role)
+      return { ...state, authenticated: true, user: action.user, username: action.username, role: action.role }
     case 'LOGOUT':
       localStorage.removeItem('token')
       localStorage.removeItem('user')
       localStorage.removeItem('username')
-      return { ...state, authenticated: false, user: null, username: null }
+      localStorage.removeItem('role')
+      return { ...state, authenticated: false, user: null, username: null, role: null }
     default:
       return state
   }
