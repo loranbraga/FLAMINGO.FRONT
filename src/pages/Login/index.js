@@ -13,6 +13,7 @@ function Login() {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const isMobile = useMediaQuery({ query: '(max-width: 1000px)' });
 
@@ -21,17 +22,20 @@ function Login() {
 
   const onSubmit = async () => {
     try {
+      setLoading(true)
       const { data } = await authenticate(email, password)
       dispatch({type: 'LOGIN', user: data.user, username: data.user.username, token: data.token, role: data.user.role})
       Notification.success("Entrooou!", "Você esta dentro do flamingo!")
     } catch (error) {
       Notification.error("Erro!", error.message)
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
     <>
-      {/* <Loader /> */}
+      { loading && <Loader />}
       { useSelector(state => state.authenticated) && <Redirect to="/home" />}
       <Row className="m-0">
         {
@@ -57,7 +61,7 @@ function Login() {
                 <Input placeholder="Senha" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
               </Col>
             </Row>
-            <Row className="mt-3">
+            <Row className="mt-2">
               <Col>
                 <Button type="button" style={{backgroundColor: "#ff409f"}} onClick={onSubmit}block>Entrar</Button>
               </Col>

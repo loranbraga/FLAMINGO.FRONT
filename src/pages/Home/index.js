@@ -9,12 +9,15 @@ import Menu from '../../components/Menu'
 import Post from '../../components/Post'
 import profile from '../../images/profile.svg'
 import Notification from '../../helper/Notification'
+import Loader from '../../helper/Loader'
 
 function Home() {
 
   const [content, setContent] = useState('')
   const [posts, setPosts] = useState([])
   const [update, setUpdate] = useState(false)
+  const [loading, setLoading] = useState(false)
+
 
   const publish = async () => {
     try {
@@ -29,8 +32,16 @@ function Home() {
   }
 
   const get = async () => {
-    const { data } = await getPosts();
-    setPosts(data)
+    try {
+      setLoading(true)
+      const { data } = await getPosts();
+      setPosts(data)
+    } catch (error) {
+      Notification.error("Error!", error.message)
+    }
+    finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -39,7 +50,8 @@ function Home() {
 
   return (
     <>
-     { !useSelector(state => state.authenticated) && <Redirect to="/" />}
+      { loading && <Loader />}
+      { !useSelector(state => state.authenticated) && <Redirect to="/" />}
       <Menu />
       <Container style={
         {

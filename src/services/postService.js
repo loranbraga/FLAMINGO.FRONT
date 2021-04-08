@@ -19,3 +19,7 @@ export const likePost = async (post_id) => {
 export const dislikePost = async (post_id) => {
   return api.post(`/dislike/${post_id}`);
 };
+
+export const deletePost = async (post_id) => {
+  return api.delete(`/post/${post_id}`);
+};
