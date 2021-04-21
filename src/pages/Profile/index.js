@@ -6,6 +6,7 @@ import { Redirect, useParams } from 'react-router-dom'
 
 import { createPost, getPostsByUser } from '../../services/postService'
 
+import {url} from '../../config/api'
 import Menu from '../../components/Menu'
 import Post from '../../components/Post'
 import profile from '../../images/profile.svg'
@@ -24,6 +25,10 @@ function Profile() {
 
   const publish = async () => {
     try {
+      if(!content){
+        Notification.error("Error!", "A postagem deve conter um conteudo!")
+        return
+      }
       setLoading(true)
       const { data } = await createPost({content});
       setPosts([data, ...posts])
@@ -71,7 +76,11 @@ function Profile() {
             }}>
               <Row className="p-0 m-0">
                 <Col  md={1} className="p-0 m-0">
-                  <img src={profile} alt="" className="rounded-circle" />
+                  { localStorage.getItem('profile_url') !== 'null' ?
+                    <img src={`${url}files/${localStorage.getItem('profile_url')}`} width="64" height="64" alt="" className="rounded-circle" />
+                    :
+                    <img src={profile} alt="" className="rounded-circle" />
+                  }
                 </Col>
                 <Col md={11} className="p-0 m-0">
                   <Input placeholder="O que você está pensando?"  value={content} type="textarea" name="text" id="exampleText" onChange={ (e) => setContent(e.target.value)}/>

@@ -13,6 +13,8 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom'
 
+import Notification from '../helper/Notification'
+
 const Menu = () => {
 
   const [search, setSearch] = useState('')
@@ -38,7 +40,13 @@ const Menu = () => {
             <Button 
               style={{width:"15%", backgroundColor: "#ff409f", borderColor: "#ff409f"}}
               className="text-white" 
-              onClick={() => history.push(`/posts/${search?search:'_'}`)}
+              onClick={() => {
+                if(!search){
+                  Notification.error("Error!", "Não é possivel buscar em branco!")
+                  return
+                }
+                history.push(`/posts/${search}`)
+              }}
               ><AiOutlineSearch /></Button>
           </Row>
           <Row className={isMobile ? "mx-auto" : "" }>

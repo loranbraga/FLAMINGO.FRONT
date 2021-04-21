@@ -2,8 +2,10 @@ import axios from 'axios';
 
 const api = axios.create({
   // baseURL: 'http://127.0.0.1:3333/',
-  baseURL: process.env.REACT_APP_API || 'https://flamingo-br-api.herokuapp.com/',
+  baseURL: process.env.REACT_APP_API || 'http://127.0.0.1:3333/',
 });
+
+const url = process.env.REACT_APP_API || 'http://127.0.0.1:3333/'
 
 api.interceptors.request.use(
   (config) => {
@@ -43,4 +45,4 @@ function handleError(err) {
   return message;
 }
 
-export default api;
+export { api, url };
