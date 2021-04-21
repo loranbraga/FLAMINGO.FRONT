@@ -24,7 +24,7 @@ function Login() {
     try {
       setLoading(true)
       const { data } = await authenticate(email, password)
-      dispatch({type: 'LOGIN', user: data.user, username: data.user.username, token: data.token, role: data.user.role})
+      dispatch({type: 'LOGIN', user: data.user, username: data.user.username, token: data.token, role: data.user.role, profile_url: data.user.profile_url})
       Notification.success("Entrooou!", "Você esta dentro do flamingo!")
     } catch (error) {
       Notification.error("Erro!", error.message)

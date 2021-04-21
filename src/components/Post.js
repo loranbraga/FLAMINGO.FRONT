@@ -3,6 +3,7 @@ import { Media, Row } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import { AiFillLike, AiFillDislike } from "react-icons/ai"
 
+import { url } from '../config/api'
 import profile from '../images/profile.svg'
 import { likePost, dislikePost, deletePost } from '../services/postService'
 import Notification from '../helper/Notification'
@@ -51,7 +52,11 @@ const Post = ({ post, setUpdate, update }) => {
         <Row>
           <Media>
               <Media left href="#">
-                <img src={profile} alt="" className="rounded-circle" />
+                { post.user.profile_url?
+                  <img src={`${url}files/${post.user.profile_url}`} width="64" height="64" alt="" className="rounded-circle" />
+                  :
+                  <img src={profile} alt="" className="rounded-circle" />
+                }
               </Media>
               <Media body className="ml-3">
                 <Media heading style={{ fontSize: '18px'}}>

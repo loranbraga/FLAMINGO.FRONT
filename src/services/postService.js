@@ -1,4 +1,4 @@
-import api from '../config/api'
+import {api} from '../config/api'
 
 export const createPost = async (data) => {
   return api.post('/post', data);

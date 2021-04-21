@@ -19,6 +19,7 @@ function Register() {
   const [name,setName] = useState('')
   const [password,setPassword] = useState('')
   const [confirmPassword,setConfirmPassword] = useState('')
+  const [file,setFile] = useState(null)
   const [loading, setLoading] = useState(false)
 
 
@@ -54,7 +55,8 @@ function Register() {
     if( email || name || username || password){
       try {
         setLoading(true)
-        await registerUser({email: email.toLowerCase(), username:username.toLowerCase(), password, name})
+        console.log(file)
+        await registerUser({email: email.toLowerCase(), username:username.toLowerCase(), password, name, file})
         Notification.success("Sucesso", "Agora você é um flamingo no bando!")
         history.push('/')
       } catch (error) {
@@ -107,6 +109,14 @@ function Register() {
               <Label for="email" >Confirmação de senha</Label>
               <Input type="password" id="confirmPassword" name="confirmPassword" value={confirmPassword} onChange={
                 (e) => setConfirmPassword(e.target.value)
+              }/>
+            </Row>
+            <Row className="mb-2 mx-5">
+              <Label for="exampleFile">Imagem do usuário</Label>
+              <Input type="file" name="file" id="exampleFile" onChange={
+                (e) => {
+                  setFile(e.target.files[0])
+                }
               }/>
             </Row>
 
